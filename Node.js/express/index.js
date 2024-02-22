@@ -42,7 +42,7 @@ app.set('view engine', 'ejs');
 app.set('views', cfg.dir.views)
 
 // body parsing
-app.use(express.urlencoded({ extended: true })); // Form data isnt parsed OOTB neeed middelware
+app.use(express.urlencoded({ extended: true })); // Form data isnt parsed OOTB need middelware
 
 // do not identify Express
 app.disable('x-powered-by');
