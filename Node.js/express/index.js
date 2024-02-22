@@ -10,7 +10,7 @@ import compression from 'compression';
 
 // chapter 1,2,3,4,,5
 
-const __dirname = dirname(fileURLToPath( import.meta.url )) + sep; // __dirname replacement for ES6 modules, converts the URL to a file path
+const __dirname = dirname(fileURLToPath( import.meta.url )) + sep; // __dirname replacement for ES6 modules, converts the URL to a file path, to know the absulot path
 // sep is the platform-specific path segment separator, '\\' or '/'
 
 // Config
@@ -42,7 +42,7 @@ app.set('view engine', 'ejs');
 app.set('views', cfg.dir.views)
 
 // body parsing
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // Form data isnt parsed OOTB neeed middelware
 
 // do not identify Express
 app.disable('x-powered-by');
