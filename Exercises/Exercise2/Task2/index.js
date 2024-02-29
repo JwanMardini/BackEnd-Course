@@ -27,7 +27,10 @@ app.post("/submit", (req, res) =>{
     }
 })
 
+let id = 2
 app.get("/submisions", (req, res) => {
+    db.run(`INSERT INTO submission (id, name, feedback) VALUES (${id}, 'JWAN', 'LOOKS GOOD')`);
+    id+=1
     db.all('SELECT * FROM submission', [], (err, rows) => {
         if (err) {
         console.error('Database error:', error);
