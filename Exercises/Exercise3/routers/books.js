@@ -1,5 +1,5 @@
 import express from "express"
-import {books} from "../data.js"
+import {getBookById, getBooks, deleteBook, addBook} from "../data.js"
 import {reviewsRouter} from "./reviews.js"
 
 export const booksRouter = express.Router();
@@ -19,22 +19,24 @@ function generateHalLinks(baseUrl, book=null){
     // If a character object is provided, add additional links relevant to that character
     if (book) {
         // Example of adding a hypothetical update action; adjust as needed
-        links.update = { href: `${baseUrl}/characters/${book.id}`, method: "PATCH" };
+        links.update = { href: `${baseUrl}/books/${book.id}`, method: "PATCH" };
     }
     return links;
 
 }
 
-booksRouter.get("/", (req, res) => {
+booksRouter.get("/", async (req, res) => {
+    const books = await getBooks()
     const baseUrl = `${req.protocol}://${req.get("host")}`
     const hideLinks = req.query.hideLinks === 'true';
 
     const booksWithLinks = books.map(book => ({
             id: book.id,
             title: book.title,
+            author: book.author,
+            genre: book.genre,
             ...(hideLinks ? {} : { _links: generateHalLinks(baseUrl, book) })
     }));
-    console.log(booksWithLinks)
     res.json({
         count: books.length,
         _links: generateHalLinks(baseUrl),
@@ -44,17 +46,17 @@ booksRouter.get("/", (req, res) => {
     });
 });
 
-booksRouter.post("/", (req, res) => {
+booksRouter.post("/", async (req, res) => {
     if(req.body.author && req.body.title){
         const {title, author, genre} = req.body;
 
-        const book = {
-            id: books.length + 1,
-            title: title,
-            author: author,
-            genre: genre
-        }
-        books.push(book)
+        // const book = {
+        //     id: books.length + 1,
+        //     title: title,
+        //     author: author,
+        //     genre: genre
+        // }
+        const book  = await addBook(title, author, genre)
         res.status(201).json(book)
     }else{
         res.json({
@@ -65,18 +67,20 @@ booksRouter.post("/", (req, res) => {
 })
 
 
-booksRouter.get("/:id", (req, res) => {
+booksRouter.get("/:id", async (req, res) => {
     const hideLinks = req.query.hideLinks === 'true';
     const baseUrl = `${req.protocol}://${req.get("host")}`;
     const id = req.params.id
-    let book = books.find(book => book.id === parseInt(id));
-    book = {
-        id: book.id,
-        title: book.title,
-        ...(hideLinks ? {} : { _links: generateHalLinks(baseUrl, book)})
-    };
-
+    let book = await getBookById(id)
+    book = book[0]
     if(book){
+        book = {
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            genre: book.genre,
+            ...(hideLinks ? {} : { _links: generateHalLinks(baseUrl, book)})
+        };
         res.status(200).json(book)
     }else{
         res.status(404).json({
@@ -95,19 +99,24 @@ booksRouter.put("/:id", (req, res) =>{
 })
 
 
-booksRouter.delete('/:id', (req, res) => {
-    const bookId = parseInt(req.params.id);
-    // Check if the books array is empty or if the bookId is invalid
-    if(books.length === 0 || bookId < 0) {
-        return res.json({message: "No Books available"});
-    }
+booksRouter.delete('/:id', async (req, res) => {
+    // const bookId = parseInt(req.params.id);
+    // // Check if the books array is empty or if the bookId is invalid
+    // if(books.length === 0 || bookId < 0) {
+    //     return res.json({message: "No Books available"});
+    // }
 
-    // Attempt to find and remove the book by ID
-    for (let index = 0; index < books.length; index++) {
-        if (books[index].id === bookId) {
-            const removedBook = books.splice(index, 1);
-            return res.json(removedBook); // Send response and return to exit the function
-        }
+    // // Attempt to find and remove the book by ID
+    // for (let index = 0; index < books.length; index++) {
+    //     if (books[index].id === bookId) {
+    //         const removedBook = books.splice(index, 1);
+    //         return res.json(removedBook); // Send response and return to exit the function
+    //     }
+    // }
+    const bookId = parseInt(req.params.id);
+    const book = await deleteBook(bookId)
+    if(book){
+        return res.status(200).json(book)
     }
 
     // If no book is found with the given ID, send a "Books Not Found" message
