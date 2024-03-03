@@ -4,7 +4,7 @@ const {Pool} = pkg
 
 const pool = new Pool ({
     user: "myadmin",
-    host: "172.17.0.3",
+    host: "172.17.0.4",
     database: "bookStore",
     password: "pw",
     port: 5432,
@@ -38,7 +38,7 @@ async function getBookById(id) {
 
 async function addBook(title, author, genre=null){
     const result = await pool.query(`
-    INSERT INTO books VALUES (1$, 2$, 3$)
+    INSERT INTO books (title, author, genre) VALUES ($1, $2, $3) RETURNING *
     `, [title, author, genre])
 
     return result.rows[0]
@@ -46,7 +46,7 @@ async function addBook(title, author, genre=null){
 
 async function deleteBook(id){
     const result = await pool.query(`
-    DELETE FROM books WHERE id = 1$ RETURNING *
+    DELETE FROM books WHERE id = $1 RETURNING *
     `, [id])
     return result.rows[0]
 }
@@ -66,7 +66,7 @@ async function getBooksReview(id){
 
 async function deleteReview(id){
     const result = await pool.query(`
-    DELETE FROM reviews WHERE id = 1$ RETURNING *
+    DELETE FROM reviews WHERE id = $1 RETURNING *
     `, [id])
     return result.rows[0]
 }

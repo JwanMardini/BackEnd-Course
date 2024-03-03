@@ -21,6 +21,7 @@ CMD [ "npm", "start" ]
 # build the image
 # docker build -t book_review_app .
 
-# build a container from the image with volume mapping to the host machine for development purposes 
-# docker run -p 3000:3000 -d book_review_app
+# build a container from the image with volume mapping
+# docker run -d -p 3000:3000 --name book_app  -v C:\Users\jwanl\OneDrive\Desktop\BackEnd-Course\Exercises\Exercise3:/app -v node_modules book_review_app
+
 
