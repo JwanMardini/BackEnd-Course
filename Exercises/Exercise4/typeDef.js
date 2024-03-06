@@ -26,7 +26,7 @@ type Query{
 }
 
 type Mutation {
-    addFriend(): User
+    addFriend(userId: Int!, friendId: Int!): User
 }
 
 `
