@@ -1,19 +1,20 @@
 import express from "express"
 import {getBooksReview, deleteReview} from "../data.js"
+import verifyApikey from '../apiKeys.js'
 
 export const reviewsRouter = express.Router();
 
 reviewsRouter.use(express.json());
 reviewsRouter.use(express.urlencoded({ extended: true }));
 
-reviewsRouter.get("/:id/reviews", async (req, res) => {
+reviewsRouter.get("/:id/reviews", verifyApikey, async (req, res) => {
     const reviews = await getBooksReview(req.params.id)
     res.json(reviews)
     // res.json({reviews: reviews.filter(review => review.bookId == req.params.id)})
 })
 
 
-reviewsRouter.delete("/:id", (req, res) => {
+reviewsRouter.delete("/:id", verifyApikey, (req, res) => {
     const reviewId = parseInt(req.params.id);
     // for (let index = 0; index < reviews.length; index++) {
     //     if (reviews[index].id === reviewId) {

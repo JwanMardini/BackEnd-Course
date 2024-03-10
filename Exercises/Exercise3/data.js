@@ -2,9 +2,9 @@ import pkg from "pg"
 
 const {Pool} = pkg
 
-const pool = new Pool ({
+export const pool = new Pool ({
     user: "myadmin",
-    host: "172.17.0.4",
+    host: "localhost",
     database: "bookStore",
     password: "pw",
     port: 5432,

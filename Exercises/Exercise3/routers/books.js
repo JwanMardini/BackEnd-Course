@@ -1,6 +1,7 @@
 import express from "express"
 import {getBookById, getBooks, deleteBook, addBook} from "../data.js"
 import {reviewsRouter} from "./reviews.js"
+import verifyApikey from '../apiKeys.js'
 
 export const booksRouter = express.Router();
 
@@ -25,7 +26,7 @@ function generateHalLinks(baseUrl, book=null){
 
 }
 
-booksRouter.get("/", async (req, res) => {
+booksRouter.get("/", verifyApikey, async (req, res) => {
     const books = await getBooks()
     const baseUrl = `${req.protocol}://${req.get("host")}`
     const hideLinks = req.query.hideLinks === 'true';
@@ -46,7 +47,7 @@ booksRouter.get("/", async (req, res) => {
     });
 });
 
-booksRouter.post("/", async (req, res) => {
+booksRouter.post("/", verifyApikey, async (req, res) => {
     if(req.body.author && req.body.title){
         const {title, author, genre} = req.body;
 
@@ -67,7 +68,7 @@ booksRouter.post("/", async (req, res) => {
 })
 
 
-booksRouter.get("/:id", async (req, res) => {
+booksRouter.get("/:id", verifyApikey, async (req, res) => {
     const hideLinks = req.query.hideLinks === 'true';
     const baseUrl = `${req.protocol}://${req.get("host")}`;
     const id = req.params.id
@@ -90,7 +91,7 @@ booksRouter.get("/:id", async (req, res) => {
 })
 
 
-booksRouter.put("/:id", (req, res) =>{
+booksRouter.put("/:id", verifyApikey, (req, res) =>{
     const book = books.find(book => book.id === id)
     if(book){
         
@@ -99,7 +100,7 @@ booksRouter.put("/:id", (req, res) =>{
 })
 
 
-booksRouter.delete('/:id', async (req, res) => {
+booksRouter.delete('/:id', verifyApikey, async (req, res) => {
     // const bookId = parseInt(req.params.id);
     // // Check if the books array is empty or if the bookId is invalid
     // if(books.length === 0 || bookId < 0) {
