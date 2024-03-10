@@ -68,6 +68,7 @@
     - POST: create a resource
     - DELETE: delete a resource (idempotent)
     - PATCH: modify a resource
+
 - Idempotency is a property of certain operations or API requests, which guarantees that performing the operation multiple times will yield the same result as if it was executed only once.
 - Others: HEAD, OPTIONS
 
