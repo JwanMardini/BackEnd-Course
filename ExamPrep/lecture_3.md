@@ -151,6 +151,67 @@ process looks like this:
 
 ![alt text](https://cdn.discordapp.com/attachments/1204522409554612224/1216018087967461416/image.png?ex=65fedc18&is=65ec6718&hm=9cf26758c76a5187d9c9becfcee692510c4c327a17db7a9c172af93a40e2774d&)
 
+### Chapter 9 Docker book!
+
+Deploying apps with Compose
+Modern cloud-native apps are made of multiple smaller services that interact to form a
+useful app. We call this the microservices pattern.
+A microservices app might have the following seven independent services that work
+together to form a useful application:
+- Web front-end
+- Ordering
+- Catalog
+- Back-end datastore
+- Logging
+- Authentication
+- Authorization
+
+Deploying and managing lots of small microservices like these can be hard. This is
+where Compose comes in to play.
+Instead of gluing microservices together with scripts and long docker commands,
+Compose lets you describe everything in a declarative configuration file. You can use
+this file to deploy it and manage it.
+Once the app is deployed, you can manage its entire lifecycle with a simple set of commands. You can even store and manage the configuration file in a version control
+system.
+
+Deploying apps with Compose - The commands
+- docker compose up is the command to deploy a Compose app. It creates all
+images, containers, networks and volumes needed by the app. It expects the
+Compose file to be called compose.yaml but you can specify a custom filename
+with the -f flag. It’s common to start the app in the background with the --detach
+flag.
+
+- docker compose stop will stop all containers in a Compose app without deleting them from the system. They can be easily restarted with docker compose
+restart.
+
+- docker compose rm will delete a stopped Compose app. It will delete containers
+and networks, but it won’t delete volumes and images by default.
+
+- docker compose restart will restart a Compose app that has been stopped
+with docker compose stop. If you make changes to your Compose app while it’s
+stopped, these changes will not appear in the restarted app. You need to re-deploy
+the app to get the changes.
+
+- docker compose ps lists each container in the Compose app. It shows current
+state, the command running inside each container, and network ports.
+
+
+### Chapter 9 Summary
+Compose is now an integrated part of the Docker engine and has its own docker subcommand. It lets you define multi-container apps in declarative configuration file and deploy them with a single command.
+
+Compose files can be YAML or JSON, and they define all of the containers, networks, volumes, and secrets an application requires. You then feed the file to the docker compose command line and Compose uses Docker to deploy it.
+
+Once the Compose app is deployed, you can manage its entire lifecycle using the many docker compose sub-commands. 
+
+You also saw how volumes have a separate lifecycle to the rest of the app, as well as how you can use them to inject changes directly into running containers.
+
+Docker Compose is popular with developers, and the Compose file is an excellent
+source of application documentation — it defies all the services that make up the app,
+the images they use, ports they expose, networks and volumes they use, and much more.
+As such, it can help bridge the gap between dev and ops. You should also treat Compose
+files the same way you treat code. This means, among other things, storing them in
+source control repos.
+
 
 ### Chapter 13
 #### Volumes and persistent data:

@@ -12,12 +12,23 @@
 - Statelessness
     - Every request can be understood in isolation
     - Application state (context) kept by client
+    - Statelessness is exemplified by each request containing all information for processing, promoting scalability and independence between requests.
 
 - Cacheability
+    - Cacheability refers to the ability of a client or an intermediary (like a proxy server) to store the response to a request and reuse it for later, equivalent requests. In the context of RESTful APIs using HTTP, cacheability is a key characteristic defined by the caching behavior allowed by the HTTP protocol.
+
+        When a response from a server is marked as cacheable (through HTTP headers like `Cache-Control`), it means that the client or intermediary can store that response locally. If the same request is made again in the future, instead of fetching the response again from the server, the client or intermediary can use the cached response if it's still valid according to caching rules.
+
+        Cacheability enhances performance and reduces the load on both the client and the server, as it avoids redundant requests for resources that have not changed since they were last retrieved.
+
+        For example, a response with a `Cache-Control: max-age=3600` header indicates that the response can be cached by the client for up to 3600 seconds (1 hour). If the client needs the same resource again within that hour, it can use the cached response instead of making a new request to the server.
+
 - Uniform interface
     - Resources identified in request
     - Usage of HTTP methods (GET, POST, PUT, etc)
     - Response includes possible actions
+
+    - Uniform interface is shown by consistent      resource identification and manipulation methods
 
 ## REST vs RPC
 - Before REST there was SOAP
@@ -40,7 +51,6 @@
 - Use hyphens if resources use multiple words
     - /customer-orders, not /customerorders
 
-## Naming, cont'd
 - Only use lowercase, no spaces or underscore
 - Use query parameters for filtering, sorting, and pagination
     - /products?category=electronics&sort=price_asc&page=1
@@ -105,7 +115,11 @@
 - 500: Server error
 
 ## HATEOAS
+
+- HATEOAS dynamically guides clients through application state changes with hyperlinks, indicating possible next actions.
+
 - Most REST APIs follow principles mentioned above
+
 - But HATEOAS is mostly ignored or forgotten
 - HATEOAS means Hypermedia As The Engine Of Application State
 - It’s about adding links to a response, just like an HTML page contains links to other pages
