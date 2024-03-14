@@ -19,7 +19,7 @@ type Post{
 
 type Query{
     allUsers: [User!]
-    allPosts: [Post!]
+    allPosts(id: Int!): [Post!]
     userBy(id: Int!): User
     postBy(id: Int!): Post
     friendFeed(id: Int!): FriendFeed
