@@ -50,7 +50,6 @@ booksRouter.get("/", verifyApikey, async (req, res) => {
 booksRouter.post("/", verifyApikey, async (req, res) => {
     if(req.body.author && req.body.title){
         const {title, author, genre} = req.body;
-
         // const book = {
         //     id: books.length + 1,
         //     title: title,
@@ -106,7 +105,6 @@ booksRouter.delete('/:id', verifyApikey, async (req, res) => {
     // if(books.length === 0 || bookId < 0) {
     //     return res.json({message: "No Books available"});
     // }
-
     // // Attempt to find and remove the book by ID
     // for (let index = 0; index < books.length; index++) {
     //     if (books[index].id === bookId) {

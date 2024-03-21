@@ -9,7 +9,6 @@ const app = express()
 
 // Use Helmet!
 app.use(helmet());
-
 app.use("/books", booksRouter)
 app.use("/reviews", reviewsRouter)
 
@@ -17,12 +16,13 @@ app.get("/api", (req, res) => {
     res.json(theApiKeys)
 })
 
-
-
-
 // Error handler
 app.use(errorHandler.notFoundDefault)
 app.use(errorHandler.errorDefault)
+
+app.listen(3000, () => {
+    console.log("Running on: http//:localhost:3000")
+})
 
 
 // // custom 404
@@ -36,8 +36,3 @@ app.use(errorHandler.errorDefault)
 //     console.error(err.stack)
 //     res.status(500).send('Something is broke')
 // })
-  
-
-app.listen(3000, () => {
-    console.log("Running on: http//:localhost:3000")
-})
