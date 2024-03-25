@@ -1,13 +1,15 @@
 import pkg from "pg"
+import dotenv from "dotenv"
+dotenv.config()
 
 const {Pool} = pkg
 
 export const pool = new Pool ({
-    user: "myadmin",
-    host: "localhost",
-    database: "bookStore",
-    password: "pw",
-    port: 5432,
+    user: process.env.USER,
+    host: process.env.HOST,
+    database: process.env.DB,
+    password: process.env.PASSWORD,
+    port: process.env.DB_PORT,
 })
 async function getBooks(){
     const result = await pool.query(`

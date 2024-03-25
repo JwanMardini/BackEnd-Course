@@ -4,6 +4,14 @@ import {reviewsRouter} from "./routers/reviews.js"
 import { theApiKeys } from "./apiKeys.js";
 import helmet from "helmet";
 import { handler as errorHandler } from './errorHandler.js'
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+const result = dotenv.config();
+if (result.error) {
+    throw result.error;
+}
+
 
 const app = express()
 
@@ -21,8 +29,9 @@ app.use(errorHandler.notFoundDefault)
 app.use(errorHandler.errorDefault)
 
 app.listen(3000, () => {
-    console.log("Running on: http//:localhost:3000")
+    console.log("Running on: http://localhost:3000")
 })
+
 
 
 // // custom 404
